@@ -1,23 +1,30 @@
 from cryptography.fernet import Fernet
 
-key = Fernet.generate_key()
-print(key)
 
-cipher = Fernet(key)
+class Full:
 
-# ----------------------------------------------------
+    def __init__(self):
+        self.key = ''
+        self.cipher = ''
 
-with open('../../my_key.txt', 'wb') as f:
-    f.write(key)
+    def secret(self):
+        self.key = Fernet.generate_key()
+        key = self.key
+        return key
 
-text_to_secure = open('../../stih.txt', 'rb').read()
-print(text_to_secure)
+    def read(self):
+        self.cipher = Fernet(self.key)
+        with open('../../my_key.txt', 'wb') as f:
+            f.write(self.key)
+        text_to_secure = open('../../stih.txt', 'rb').read()
+        return text_to_secure
 
-with open('../../my_secured_text.txt', 'wb') as f:
-    f.write(cipher.encrypt(text_to_secure))
+    def reading(self, text_to_secure):
+        with open('../../my_secured_text.txt', 'wb') as f:
+            f.write(self.cipher.encrypt(text_to_secure))
 
-text_to_unsecure = open('../../my_secured_text.txt', 'rb').read()
-print(text_to_unsecure)
-
-with open('../../my_unsecured_text.txt', 'wb') as f:
-    f.write(cipher.decrypt(text_to_unsecure))
+    def end(self):
+        text_to_unsecure = open('../../my_secured_text.txt', 'rb').read()
+        with open('../../my_unsecured_text.txt', 'wb') as f:
+            f.write(self.cipher.decrypt(text_to_unsecure))
+        return text_to_unsecure
